@@ -9,9 +9,11 @@ import MessageInput from '../../../components/MessageInput';
 import { getMessagesByRoom } from '../../../services/message'; 
 import { Message } from '@/type'; 
 
-const RoomPage: React.FC = () => {
-  const router: NextRouter = useRouter(); 
-  const { roomId } = router.query;
+const RoomPage = ({params}:{params:any}) => {
+  const router = useRouter(); 
+  const roomId  = params.roomId;
+  console.log(roomId);
+  
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -60,6 +62,14 @@ const RoomPage: React.FC = () => {
       }
     }
   };
+
+  if(roomId == "base"){
+    return(
+      <div>
+        Open a chat
+      </div>
+    )
+  }
 
   if (loading) return <p>Loading...</p>;
 

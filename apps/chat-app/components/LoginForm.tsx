@@ -1,7 +1,7 @@
 
 "use client"
 import React, { useState } from 'react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { login } from '../services/auth';
 
 const LoginForm: React.FC = () => {
@@ -23,7 +23,7 @@ const LoginForm: React.FC = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 text-black">
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-sm">
         <h1 className="text-2xl font-bold mb-6 text-center">Login</h1>
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}

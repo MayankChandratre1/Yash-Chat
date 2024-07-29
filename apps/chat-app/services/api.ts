@@ -27,11 +27,11 @@ api.interceptors.request.use(
 );
 
 
-export const registerUser = (username: string, password: string) =>
-  api.post('/auth/register', { username, password });
+export const registerUser = (email: string, password: string) =>
+  api.post('/auth/register', { email, password });
 
-export const loginUser = (username: string, password: string) =>
-  api.post('/auth/login', { username, password });
+export const loginUser = (email: string, password: string) =>
+  api.post('/auth/login', { email, password });
 
 export const sendMessage = (content: string, roomId: number) =>
   api.post('/messages/send', { content, roomId });
