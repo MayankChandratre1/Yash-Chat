@@ -68,14 +68,15 @@ async function sendMessage(ws: ExtendedWebSocket, message: any) {
     if (!ws.userId) {
       throw new Error('User not authenticated');
     }
-
+    
     const { content, roomId } = message;
+    console.log(content);
 
     const newMessage = await prisma.message.create({
       data: {
         content,
         userId: ws.userId,
-        roomId,
+        roomId:Number(roomId),
       },
     });
 

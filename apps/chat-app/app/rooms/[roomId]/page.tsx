@@ -75,7 +75,7 @@ const RoomPage = ({params}:{params:any}) => {
 
   return (
     <Layout>
-      <div className="flex flex-col h-screen">
+      <div className="flex flex-col h-screen text-black">
         <div className="flex-grow overflow-y-auto p-4">
           {error && <p className="text-red-500">{error}</p>}
           <MessageList roomId={Number(roomId)} />
