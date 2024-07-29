@@ -2,16 +2,34 @@
 "use client"
 import React, { useState, useEffect } from 'react';
 import { ProfileFormProps, UserProfile } from '@/type';
-import { updateUserProfile } from '@/services/api'; // Adjust if needed
+import { getUserProfile, updateUserProfile } from '@/services/api'; // Adjust if needed
+import Layout from '@/components/Layout';
+import { useRouter } from 'next/navigation';
+
+// {
+//   id: number;
+//     email: string;
+//     name?: string;
+//     avatarUrl?: string;
+// }
 
 const ProfileForm: React.FC<ProfileFormProps> = ({ initialProfile }) => {
   const [profile, setProfile] = useState<UserProfile | null>(initialProfile);
+  const router = useRouter()
+  const [success, setSuccess] = useState<string|null>(null)
 
   useEffect(() => {
-    setProfile(initialProfile);
+    const fetchProfile = async () => {
+      const {data} = await getUserProfile()
+      console.log(data);
+      setProfile(data)
+    }
+     fetchProfile()
+    // setProfile(initialProfile);
   }, [initialProfile]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSuccess(null)
     setProfile({
       ...profile!,
       [e.target.name]: e.target.value,
@@ -23,10 +41,14 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ initialProfile }) => {
     try {
       if (profile && profile.name && profile.email) {
         await updateUserProfile(profile.name, profile.email);
+        console.log("Success");
+        setSuccess("Succcessfully updated your profile!!")
         // Handle success (e.g., show a success message or redirect)
       }
     } catch (err) {
       // Handle error (e.g., show an error message)
+      console.log(err);
+      
     }
   };
 
@@ -34,6 +56,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ initialProfile }) => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      <div className='text-green-500 italic'>{success}</div>
       <div>
         <label htmlFor="name" className="block text-sm font-medium text-gray-700">
           Name
@@ -43,8 +66,9 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ initialProfile }) => {
           name="name"
           type="text"
           value={profile.name || ''}
+          placeholder='Enter name'
           onChange={handleChange}
-          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm px-3 py-1"
         />
       </div>
       <div>
@@ -57,7 +81,8 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ initialProfile }) => {
           type="email"
           value={profile.email}
           onChange={handleChange}
-          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+          placeholder='Enter email'
+          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm px-3 py-1"
         />
       </div>
       <div>
@@ -69,8 +94,9 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ initialProfile }) => {
           name="avatarUrl"
           type="text"
           value={profile.avatarUrl || ''}
+          placeholder='Enter avatar url'
           onChange={handleChange}
-          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm px-3 py-1"
         />
       </div>
       <button
@@ -83,4 +109,26 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ initialProfile }) => {
   );
 };
 
-export default ProfileForm;
+
+
+const page = () => {
+  return (
+    <Layout>
+      <div className='text-black'>
+      <ProfileForm initialProfile={
+            {id: 1,
+              email: "mayanlmchandratre@gmail.com",
+              name: "Mayank",
+              avatarUrl: "no-url",
+              createdAt:"",
+              updatedAt:""
+            }
+      } />
+    </div>
+    </Layout>
+  )
+}
+
+export default page
+
+

@@ -8,10 +8,14 @@ import roomRoutes from './routes/roomRoutes';
 import messageRoutes from './routes/messageRoutes';
 import reactionRoutes from './routes/reactionRoutes';
 import cors from 'cors';
+import { getUserProfile } from './services/userService';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 const server = app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+let userId = 1;
+
+export const setUserId = (id:number)=> userId = id
 
 app.use(cors());
 app.use(express.json());
@@ -27,11 +31,11 @@ interface ExtendedWebSocket extends WebSocket {
 
 const wss = new WebSocketServer({ server });
 
-wss.on('connection', (ws: ExtendedWebSocket) => {
+wss.on('connection', async (ws: ExtendedWebSocket) => {
   console.log('A user connected');
 
  
-  ws.userId = 1; 
+  ws.userId = userId; 
 
   ws.on('message', async (data: string) => {
     try {

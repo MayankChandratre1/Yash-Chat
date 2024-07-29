@@ -69,5 +69,5 @@ export const getRooms = () =>
 export const getUserProfile = () =>
   api.get('/users/profile');
 
-export const updateUserProfile = (username: string, email: string) =>
-  api.patch('/users/profile', { username, email });
+export const updateUserProfile = (name: string, email: string) =>
+  api.patch('/users/profile', { name, email });
